@@ -1,13 +1,7 @@
 name: paper-reader
-version: 2.0.0
-description: >
-  Declarative manifest for the static/dynamic split. SKILL.md uses this to
-  decide which fragments to load for a given paper-reading request. The main
-  axis is the source format, which changes how text, figures, and tables are
-  extracted before the 8-dimension structured reading is built.
+version: 2.1.0
 
 always_load:
-  # Skill-local core
   - static/core/principles.md
   - static/core/workflow.md
   - static/core/output-contract.md
@@ -15,13 +9,9 @@ always_load:
 axes:
   source_format:
     detect: |
-      Determine the input form the user provided. Use pdf-text for a
-      selectable-text PDF (default), scanned-pdf for an image-only or
-      OCR-required PDF, doi-url for a bare DOI, arXiv ID, or publisher URL
-      that must be resolved first, and pasted-text when the user pastes
-      abstract/prose/notes without a retrievable original file.
-      If several apply (e.g. a DOI that resolves to a PDF), load the
-      resolution fragment first, then the fragment for the resolved artifact.
+      pdf-text=可选文本PDF(默认), scanned-pdf=图片/OCR PDF,
+      doi-url=DOI/arXiv/出版商URL, pasted-text=粘贴的文本.
+      多值时先加载解析碎片再加载结果碎片.
     values:
       pdf-text:     static/fragments/source/pdf-text.md
       scanned-pdf:  static/fragments/source/scanned-pdf.md
@@ -32,11 +22,11 @@ axes:
 
 references:
   on_demand:
-    - condition: source block ID assignment, lightweight source tracing, page anchoring
+    - condition: source block ID / page anchoring
       path: references/source-tracing.md
-    - condition: extracting key tables/figures from the paper into the report
+    - condition: extracting tables/figures
       path: references/figure-extraction.md
-    - condition: judging fit level (high/mid/low), mapping to user hypotheses
+    - condition: fit level / hypothesis mapping
       path: references/fit-assessment.md
-    - condition: selecting quotable sentences, citation format, page annotation
+    - condition: quotable sentences / citation format
       path: references/quotable-sentences.md
