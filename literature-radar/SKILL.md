@@ -8,50 +8,25 @@ version: "2.1.0"
 
 经管领域顶刊文献精准检索技能，从源头严格把控文献质量。
 
-本技能分为两层：
-- **静态层**（`static/`）：期刊等级体系、搜索规则等版本化内容，每次加载。
-- **动态层**（本文件 + `manifest.yaml`）：检测用户需求，加载匹配的工作流，按需引用深度参考。
-
 **不要从记忆或本文件直接应用检索逻辑。** 始终从磁盘加载所需片段。
 
 ---
 
-## 路由协议
+## 路由协议（执行时严格按步骤，不要跳步）
 
-### 1. 加载 manifest 和核心层
+### 1. 并行加载核心层
 
-读取 `manifest.yaml`。同时读取 `always_load` 中的所有文件：
+一次性读取以下文件（manifest + always_load）：
+- `manifest.yaml`
+- `static/core/journal-tiers.md` — 三级期刊等级体系
+- `static/core/search-rules.md` — 真实性红线、验证流程、输出字段
 
-- `static/core/journal-tiers.md` — 三级期刊等级体系（UTD24/ABS4*/NSFC A类/中文顶刊）
-- `static/core/search-rules.md` — 真实性红线、验证流程、输出字段、数量控制
+### 2. 检测工作流并加载
 
-### 2. 检测工作流
+将用户需求映射到工作流（topic-search / author-tracking / citation-trace / journal-scan），立即读取 manifest 中对应的工作流文件。组合请求同时加载多个。**不要**加载全部工作流。
 
-将用户需求映射到一个或多个工作流值：
+### 3. 执行
 
-- `topic-search` — 按研究主题检索顶刊文献
-- `author-tracking` — 按作者/团队追踪发表记录
-- `citation-trace` — 引文网络追踪（前向/后向）
-- `journal-scan` — 扫描特定期刊最新发表
+按顺序：核心规则 → 工作流步骤 → 按需调用 `references/` 和 `scripts/`。
 
-组合请求可同时加载多个工作流。用一行文字说明检测到的工作流。
-
-### 3. 加载匹配的工作流
-
-读取 `manifest.yaml` 中工作流对应的文件。**不要**加载全部工作流。
-
-### 4. 执行工作流
-
-按以下顺序应用加载的内容：
-1. 核心规则（期刊等级、搜索规则）
-2. 工作流特定步骤
-3. 按需加载的共享模块（去重引擎、检索策略）
-
-**输出方式**：首选使用 `scripts/render_report.py` 渲染 HTML 报告（将结构化 JSON 数据传入脚本）。回退方案参照 `static/templates/html-report.md`。
-
-### 5. 深度参考按需调用
-
-`references/` 和 `scripts/` 下的文件按需打开：
-- `references/dedup-engine.md` — 去重逻辑（多轮检索时使用）
-- `references/search-strategy.md` — 关键词扩展与多轮检索策略
-- `scripts/render_report.py` — HTML 报告渲染脚本
+输出方式：首选 `scripts/render_report.py` 渲染 HTML，回退参照 `static/templates/html-report.md`。
