@@ -46,7 +46,7 @@ Every paper must be analyzed along these 8 dimensions, no more, no less, no merg
 
 ## Batch processing
 
-- Maximum 5 papers per batch.
+- Maximum 10 papers per batch (recommended 5-8 for quality).
 - Each paper gets an independent full 8-dimension report.
 - Batch summary ends with a横向对比表 (research question, method, core conclusion, fit level — four columns).
 - Sort by fit level descending (high → mid → low).
