@@ -1,8 +1,5 @@
 name: review-weaver
-version: 2.0.0
-description: >
-  Declarative manifest for the static/dynamic split. SKILL.md uses this to
-  decide which fragments to load for a given review synthesis task.
+version: 2.1.0
 
 always_load:
   - static/core/stance.md
@@ -12,10 +9,7 @@ always_load:
 axes:
   review_type:
     detect: |
-      Decide what kind of review synthesis the user needs. Use the user's stated
-      framing first. If the user provides explicit hypotheses, use hypothesis.
-      If the user describes a topic area without hypotheses, use topic. If the
-      user focuses on comparing methodologies, use method.
+      hypothesis=用户提供假设, topic=主题无假设, method=方法学比较.
     values:
       hypothesis:  static/fragments/review_type/hypothesis.md
       topic:       static/fragments/review_type/topic.md
@@ -25,9 +19,7 @@ axes:
 
   target_style:
     detect: |
-      Detect the target publication venue. If the user mentions SSCI, English,
-      or international journals, use ssci. Otherwise default to cn-core for
-      Chinese core journals (CSSCI, 北大核心, NSFC 分级).
+      ssci=英文/SSCI/国际期刊, cn-core=中文核心(默认).
     values:
       cn-core:  static/fragments/target_style/cn-core.md
       ssci:     static/fragments/target_style/ssci.md
@@ -36,9 +28,9 @@ axes:
 
 references:
   on_demand:
-    - condition: needs paragraph-level flow check after drafting
+    - condition: 段落流检查
       path: references/paragraph-flow.md
-    - condition: needs deep guidance on disagreement analysis and gap identification
+    - condition: 分歧分析深度方法论
       path: references/disagreement-analysis.md
-    - condition: user needs reproducible prompt templates for standalone use
+    - condition: 推文模板
       path: references/prompt-templates.md
