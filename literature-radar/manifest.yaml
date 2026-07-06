@@ -1,8 +1,5 @@
 name: literature-radar
-version: 2.0.0
-description: >
-  经管领域顶刊文献精准检索与分级筛选。SKILL.md 使用本清单决定为一次
-  文献检索请求加载哪些片段。主轴是 workflow：用户需求映射到多个工作流之一。
+version: 2.1.0
 
 always_load:
   - static/core/journal-tiers.md
@@ -11,7 +8,7 @@ always_load:
 axes:
   workflow:
     detect: |
-      将用户需求映射到一个工作流。组合请求（如检索后导出）可同时加载多个。
+      映射用户需求到工作流。组合请求可同时加载多个。
         topic-search       — 按研究主题检索顶刊文献
         author-tracking    — 按作者/团队追踪顶刊发表记录
         citation-trace     — 引文网络追踪（前向/后向引文）
